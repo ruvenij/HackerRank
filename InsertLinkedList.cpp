@@ -13,22 +13,48 @@ class SinglyLinkedListNode {
         }
 };
 
-SinglyLinkedListNode* reverse(SinglyLinkedListNode* llist) 
+/*
+ * Complete the 'insertNodeAtPosition' function below.
+ *
+ * The function is expected to return an INTEGER_SINGLY_LINKED_LIST.
+ * The function accepts following parameters:
+ *  1. INTEGER_SINGLY_LINKED_LIST llist
+ *  2. INTEGER data
+ *  3. INTEGER position
+ */
+
+/*
+ * For your reference:
+ *
+ * SinglyLinkedListNode {
+ *     int data;
+ *     SinglyLinkedListNode* next;
+ * };
+ *
+ */
+
+SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* llist, int data, int position) 
 {
-    SinglyLinkedListNode* currentNaode = llist;
-    SinglyLinkedListNode* nextNode = nullptr;
-    SinglyLinkedListNode* prevNode = nullptr;
+    SinglyLinkedListNode* newNode = new SinglyLinkedListNode(data);
     
-    while(currentNaode->next != nullptr)
+    if (position == 0)
     {
-        nextNode = currentNaode->next;
-        currentNaode->next = prevNode;
-        prevNode = currentNaode;
-        currentNaode = nextNode;
+        newNode->next = llist;
+        return newNode;
     }
     
-    currentNaode->next = prevNode;
-    return currentNaode;
+    int currentPos = 1;
+    SinglyLinkedListNode* currentNode = llist;
+    
+    while(currentPos < position)
+    {
+        currentNode = currentNode->next;
+        currentPos++;
+    }
+    
+    newNode->next = currentNode->next;
+    currentNode->next = newNode;
+    return llist;
 }
 
 void printNode(SinglyLinkedListNode* node)
@@ -58,8 +84,8 @@ int main()
     five->next = nullptr;
 
     printNode(head);
-    auto node = reverse(head);
+    auto node = insertNodeAtPosition(head, 8, 3);
     printNode(node);
-    
+
     return 0;
 }
