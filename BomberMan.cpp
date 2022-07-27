@@ -11,10 +11,10 @@ void printVector(int index, const vector<string>& B)
     }
 }
 
-vector<string> bomberMan(int n, vector<string> grid) 
+vector<string> greedyBomberMan(int n, vector<string> grid) 
 {
     if (n == 1) return grid;
-    
+
     int index = 1;
     int rowCount = grid.size();
     int colCount = grid[0].size();
@@ -48,20 +48,73 @@ vector<string> bomberMan(int n, vector<string> grid)
                     if (grid[r][c] != '.') grid[r][c] = 'O';
                 }
             }
-        } 
-        
+        }
+
         index++;  
     }
-    
+
+    return grid;
+}
+
+vector<string> bomberMan(int n, vector<string> grid) 
+{
+    if (n == 1) return grid;
+
+    int index = 1;
+    int rowCount = grid.size();
+    int colCount = grid[0].size();
+    int count = n % 4;
+    count = (count == 0) ? 4 : count;
+    index = 1;
+
+    while (index <= count)
+    {
+        for (int r = 0; r < rowCount; r++)
+        {
+            for (int c = 0; c < colCount; c++)
+            {
+                if (grid[r][c] != '.')
+                {
+                    grid[r][c]++;
+                }
+
+                if (count == index)
+                {
+                    if (grid[r][c] == '.') 
+                    {
+                        if (count != 1)
+                        {
+                            grid[r][c] = 'O';
+                        }
+                    }
+                    else if (grid[r][c] == 'R')
+                    {
+                        grid[r][c] = '.';
+                    }
+                    else
+                    {
+                        grid[r][c] = 'O';
+                    }
+                }
+            }
+        }
+
+        index++;
+    }
+
     return grid;
 }
 
 int main()
 {
-    int n = 3;
+    int n = 5;
     std::vector<string> A = {".......", "...O...", "....O..", ".......", "OO.....", "OO....."};
+    //std::vector<string> A = {".......", "...O.O.", "....O..", "..O....", "OO...OO", "OO.O..."};
     std::vector<string> B = bomberMan(n, A);
+    printVector(-1, B);
 
+    B.clear();
+    B = greedyBomberMan(n, A);
     printVector(-1, B);
 
     /*for (std::string word : B)
